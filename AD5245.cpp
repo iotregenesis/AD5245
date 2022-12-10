@@ -28,7 +28,7 @@ AD5245::AD5245(const uint8_t address, TwoWire *wire)
 #if defined (ESP8266) || defined(ESP32)
 bool AD5245::begin(uint8_t dataPin, uint8_t clockPin)
 {
-  _wire = &Wire;
+  //_wire = &Wire;
   if ((dataPin < 255) && (clockPin < 255))
   {
     _wire->begin(dataPin, clockPin);
@@ -82,7 +82,8 @@ uint8_t AD5245::read()
 
 uint8_t AD5245::readDevice()
 {
-  Wire.requestFrom(_address, (uint8_t)1);
+  //Wire.requestFrom(_address, (uint8_t)1);
+  _wire->requestFrom(_address, (uint8_t)1);
   return Wire.read();
 }
 
@@ -101,10 +102,14 @@ uint8_t AD5245::shutDown()
 //
 uint8_t AD5245::send(const uint8_t cmd, const uint8_t value)
 {
-  Wire.beginTransmission(_address);
-  Wire.write(cmd);
-  Wire.write(value);
-  return Wire.endTransmission();
+  //Wire.beginTransmission(_address);
+  //Wire.write(cmd);
+  //Wire.write(value);
+  //return Wire.endTransmission();
+  _wire->beginTransmission(_address);
+  _wire->write(cmd);
+  _wire->write(value);
+  return _wire->endTransmission();
 }
 
 
